@@ -1,5 +1,5 @@
 import { Base, ApplyOptions, OutputOptions, DestroyOptions, ExecuteOptions } from './Base'
-import { SimpleOutputObject, OutputObject, TerraformMultipleOutput, TerraformSingleOutput, SimpleOutput, Output, ResourceCounts, ChangeTypes } from './Types'
+import { SimpleOutputObject, OutputObject, TerraformMultipleOutput, SimpleOutput, Output, ResourceCounts, ChangeTypes } from './Types'
 
 class Terraform extends Base {
   constructor() {
@@ -28,12 +28,14 @@ class Terraform extends Base {
 
   public async outputValue(path: string, value: string, options: OutputOptions = {}): Promise<SimpleOutput | Output> {
     const parsedOptions = this.parseOutputOptions(options)
-    const { stdout } = await this.executeSync(path, `output -json ${value}`, { silent: parsedOptions.silent })
-    const output = <TerraformSingleOutput>JSON.parse(stdout)
+    const { stdout } = await this.executeSync(path, `output -json`, { silent: parsedOptions.silent })
+    const output = <TerraformMultipleOutput>JSON.parse(stdout)
     if (parsedOptions.simple) {
-      return output.value
+      return output[value].value
     }
-    return output
+    else { 
+      return output[value]
+    }
   }
 
   public async getOutputKeys(path: string, options: ExecuteOptions = {}): Promise<string[]> {
