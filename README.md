@@ -1,27 +1,28 @@
-# JS-Terraform
+# Terraform JS 
 
-A TypeScript/JavaScript wrapper around Terraform and Terragrunt. Fully Promise-based.
+A TypeScript/JavaScript wrapper around Terraform. Fully Promise-based.
+
+Based on https://github.com/Stocard/terraform-js - Original license included in 
 
 * [Installation](#installation)
 * [Terraform](#terraform)
-* [Terragrunt](#terragrunt)
 
 ## Installation
 
 ```sh
-$ npm install js-terraform
+$ npm install @noowu/terraform-js
 ```
 or
 
 ```sh
-$ yarn add js-terraform
+$ yarn add @noowu/terraform-js
 ```
 
 ## Terraform
 
 Create a new `Terraform` instance:
 ```js
-const {Terraform} = require('js-terraform');
+const {Terraform} = require('@noowu/terraform-js');
 const terraform = new Terraform()
 ```
 
@@ -119,45 +120,6 @@ Executes `terraform output -json` on the given `path` and returns the values. E.
 
 Options: [OutputOptions](#OutputOptions): `silent` defaults to `true`, `simple` defaults to `true`
 
-
-
-## Terragrunt
-
-Create a new `Terragrunt` instance:
-```js
-const terragrunt = new Terragrunt()
-```
-
-### `applyAll(path: string, options: ApplyOptions = {}): Promise<void>`
-
-Executes `terragrunt apply` on the given `path`. Returns void.
-
-Options: [ApplyOptions](#InteractiveOptions): `silent` defaults to `false`, `autoApprove` defaults to `false`
-
-### `destroyAll(path: string, options: DestroyOptions = {}): Promise<void>`
-
-Executes `terragrunt destroy` on the given `path`. Returns void.
-
-Options: [DestroyOptions](#InteractiveOptions): `silent` defaults to `false`, `autoApprove` defaults to `false`
-
-### `planAll(path: string, options: ExecuteOptions = {}): Promise<void>`
-
-Executes `terragrunt destroy` on the given `path`. Returns void.
-
-Options: [ExecuteOptions](#ExecuteOptions): `silent` defaults to `false`
-
-### `output`
-
-Same signature and options as the `Terraform.output` function, except that it uses `terragrunt`
-
-### `outputValue`
-
-Same signature and options as the `Terraform.outputValue` function, except that it uses `terragrunt`
-
-### `getOutputKeys`
-
-Same signature and options as the `Terraform.getOutputKeys` function, except that it uses `terragrunt`
-
 ## Types
 
 #### ExecuteOptions
@@ -208,6 +170,6 @@ The default depends on the function, please read the documentation carefully!
 
 There are two different ways of "logging", the `logger` and `outputStreams`
 
-* `logger`: Is used for any `terraform`/`terragrunt` function which does not need any interactive input (`plan`, `output`..). The default logger is `console.log`. You can pass a custom logger by calling `setLogger` for, e.g. writing data to a file. But be careful, `silent` must be `true` when you use custom logger and want to get the output
+* `logger`: Is used for any `terraform` function which does not need any interactive input (`plan`, `output`..). The default logger is `console.log`. You can pass a custom logger by calling `setLogger` for, e.g. writing data to a file. But be careful, `silent` must be `true` when you use custom logger and want to get the output
 
-* `outputStreams` (`out` and `err`): Are used for any `terraform`/`terragrunt` function which needs input by the user (`apply`, `destroy`...) The default streams are `process.stderr` and `process.stdout`
+* `outputStreams` (`out` and `err`): Are used for any `terraform` function which needs input by the user (`apply`, `destroy`...) The default streams are `process.stderr` and `process.stdout`
