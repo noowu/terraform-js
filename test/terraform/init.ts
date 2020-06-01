@@ -20,7 +20,7 @@ describe('Terraform init', () => {
   })
   it('Should plan with changes', async () => {
     const logger = new Logger()
-    terraform.setLogger(logger.getLogger())
+    terraform.setLogger(logger.getLogger().log)
     fs.copyFileSync(`${__dirname}/../helperFiles/local.tf`, `${tmpDir}/local.tf`)
     await terraform.init(tmpDir, { silent: false })
     assert.ok(logger.accumulatedText.includes('Initializing provider plugins...'))

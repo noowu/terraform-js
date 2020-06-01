@@ -28,14 +28,14 @@ class Terraform extends Base {
 
   public async outputValue(path: string, value: string, options: OutputOptions = {}): Promise<SimpleOutput | Output> {
     const parsedOptions = this.parseOutputOptions(options)
-    const { stdout } = await this.executeSync(path, `output -json`, { silent: parsedOptions.silent })
+    const { stdout } = await this.executeSync(path, 'output -json', { silent: parsedOptions.silent })
     const output = <TerraformMultipleOutput>JSON.parse(stdout)
     if (parsedOptions.simple) {
       return output[value].value
     }
-    else { 
-      return output[value]
-    }
+
+    return output[value]
+
   }
 
   public async getOutputKeys(path: string, options: ExecuteOptions = {}): Promise<string[]> {

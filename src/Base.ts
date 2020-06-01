@@ -23,23 +23,15 @@ interface OutputOptions {
   simple?: boolean
 }
 
-interface Logger {
-  log: (data: string) => Promise<void>
-}
-
 abstract class Base {
   private triggerWordsForInteractiveMode: string[]
-  private logger: Logger
+  private logger: Function
   private stdOutStream: Writable
   private stdErrStream: Writable
 
   constructor(private executableName: string, private autoApproveOptionName: string) {
     this.triggerWordsForInteractiveMode = []
-    this.logger = {
-      log: async (data: string): Promise<void> => {
-        console.log(data)
-      }
-    }
+    this.logger = console.log
     this.stdErrStream = process.stderr
     this.stdOutStream = process.stdout
   }
@@ -49,13 +41,13 @@ abstract class Base {
     this.stdOutStream = stdOutStream
   }
 
-  public setLogger(logger: Logger) {
+  public setLogger(logger: Function) {
     this.logger = logger
   }
 
   private async log(data: string, silent: boolean = true) {
     if (!silent) {
-      await this.logger.log(data)
+      await this.logger(data)
     }
   }
   protected async executeSync(path: string, args: string, options: ExecuteOptions): Promise<StdInterface> {

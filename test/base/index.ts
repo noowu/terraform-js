@@ -34,7 +34,7 @@ describe('Base', () => {
     before(async () => {
       fs.copyFileSync(`${__dirname}/../helperFiles/getOutputKeys.tfstate`, `${tmpDir}/terraform.tfstate`)
       base = new TempClass('terraform', 'approve')
-      base.setLogger(logger.getLogger())
+      base.setLogger(logger.getLogger().log)
     })
     describe('in silent mode', () => {
       it('Should return both output keys', async () => {
